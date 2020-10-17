@@ -4,6 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Login from './src/pages/Login/index'
+import Home from './src/pages/Home/index'
+import DeliveryStatus from './src/pages/DeliveryStatus';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +17,20 @@ export default function App() {
           name="Login" 
           component={Login} 
           options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name="Home" 
+          component={Home}
+          options={{ 
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name="DeliveryStatus" 
+          component={DeliveryStatus}
+          options={{ 
             headerShown: false,
           }}
         />

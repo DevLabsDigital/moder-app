@@ -15,9 +15,18 @@ import {
 } from './styles';
 import { getIcon } from '../../util/helper';
 
-const Login:FC = () => {
+interface Props {
+  navigation: any
+}
+
+const Login:FC<Props> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const goToHome = () => {
+    console.log('Go')
+    navigation.navigate('Home')
+  }
 
   return (
     <Container>
@@ -42,7 +51,7 @@ const Login:FC = () => {
             onChangeText={(value) => setPassword(value)}
             icon={{ name: 'lock', type: 'AntDesign', size: 24, color: '#d2d2d2' }}
           />
-          <LoginBtn>
+          <LoginBtn onPress={() => goToHome()}>
             <LoginText>Fazer login</LoginText>
           </LoginBtn>
         </ContainerForm>
