@@ -26,10 +26,9 @@ interface Props {
 }
 
 const Home:FC<Props> = ({navigation}) => {
-  
   return (
     <Container>
-      <CustomHeader/>
+      <CustomHeader title='Olá, Fabiano' showBtnDelivery={true}/>
       <ContainerHome>
         <Label>Status</Label>
         <ContainerSection>
@@ -65,7 +64,7 @@ const Home:FC<Props> = ({navigation}) => {
             <SectionDescription>15 entregas hoje</SectionDescription>
           </ContainerDescription>
         </ContainerSection>
-        <ExtractBtn>
+        <ExtractBtn onPress={() => navigation.navigate('Extract')}>
             <ExtractText>Ver extrato de entregas detalhado</ExtractText>
             { getIcon('Entypo', 'chevron-small-right', 24, 'black') }
           </ExtractBtn>

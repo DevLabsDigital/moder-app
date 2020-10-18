@@ -56,7 +56,7 @@ const delivery2 = {
 const DeliveryStatus: React.FC = () => {
   return (
     <Container>
-      <CustomHeader/>
+      <CustomHeader title='Em andamento' showBtnDelivery={false}/>
       <DeliveryStatusContainer>
         <StatusContainer>
           <FirstStatusSection>

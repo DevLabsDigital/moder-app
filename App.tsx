@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './src/pages/Login/index'
 import Home from './src/pages/Home/index'
 import DeliveryStatus from './src/pages/DeliveryStatus';
+import Extract from './src/pages/Extract';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,13 @@ export default function App() {
         <Stack.Screen 
           name="DeliveryStatus" 
           component={DeliveryStatus}
+          options={{ 
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name="Extract" 
+          component={Extract}
           options={{ 
             headerShown: false,
           }}
