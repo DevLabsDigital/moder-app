@@ -13,14 +13,13 @@ export const ContainerHeader = styled.View`
   margin-top: 24px;
   height: 80px;
   width: 100%;
-  border-width: 1;
-  border-radius: 2;
+  border-width: 1px;
+  border-radius: 2px;
   border-color: #ddd;
   border-bottom-width: 0;
   shadow-color: #000;
   shadow-offset: 0px 4px;
   shadow-opacity: 0.8;
-  shadow-radius: 2;
   elevation: 1;
 `;
 export const ContainerEnd = styled.View`

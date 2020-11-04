@@ -7,6 +7,9 @@ import Login from './src/pages/Login/index'
 import Home from './src/pages/Home/index'
 import DeliveryStatus from './src/pages/DeliveryStatus';
 import Extract from './src/pages/Extract';
+import Racer from './src/pages/Racer';
+import FirstStep from './src/pages/Register/firstStep'
+import SecondStep from './src/pages/Register/secondStep'
 
 const Stack = createStackNavigator();
 
@@ -18,6 +21,20 @@ export default function App() {
           name="Login" 
           component={Login} 
           options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name="FirstStep" 
+          component={FirstStep}
+          options={{ 
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name="SecondStep" 
+          component={SecondStep}
+          options={{ 
             headerShown: false,
           }}
         />
@@ -38,6 +55,13 @@ export default function App() {
         <Stack.Screen 
           name="Extract" 
           component={Extract}
+          options={{ 
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name="Racer" 
+          component={Racer}
           options={{ 
             headerShown: false,
           }}

@@ -51,8 +51,10 @@ const Home:FC<Props> = ({navigation}) => {
             <SectionTitle>R$ 562,00</SectionTitle>
             <SectionDescription>Total a receber</SectionDescription>
           </ContainerDescription>
-          <ContainerAction>
-            { getIcon('Feather', 'eye-off', 36, '#000000') }
+          <ContainerAction> 
+            <TouchableOpacity onPress={() => navigation.navigate('Racer')}>
+              { getIcon('Feather', 'eye-off', 36, '#000000') }
+            </TouchableOpacity>
             <StatusText>ocultar</StatusText>
           </ContainerAction>
         </ContainerSection>

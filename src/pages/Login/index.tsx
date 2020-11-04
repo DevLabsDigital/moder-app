@@ -24,8 +24,11 @@ const Login:FC<Props> = ({navigation}) => {
   const [password, setPassword] = useState('');
 
   const goToHome = () => {
-    console.log('Go')
     navigation.navigate('Home')
+  }
+
+  const goToFirstStep = () => {
+    navigation.navigate('FirstStep')
   }
 
   return (
@@ -57,7 +60,7 @@ const Login:FC<Props> = ({navigation}) => {
         </ContainerForm>
         <Footer>
           <SimpleText>Não possui acesso?</SimpleText>
-          <SignInBtn>
+          <SignInBtn onPress={() => goToFirstStep()}>
             { getIcon('FontAwesome5', 'user-plus', 24, '#32c5ff') }
             <SignInText>Cadastre-se</SignInText>
           </SignInBtn>
