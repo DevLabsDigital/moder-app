@@ -1,5 +1,5 @@
 import { Image, Text, View } from 'react-native';
-import React, { FC, useState } from "react";
+import React, { FC, Fragment, useContext, useEffect, useState } from "react";
 import CustomHeader from '../../components/CustomHeader';
 import { 
   Container, 
@@ -20,28 +20,70 @@ import {
 import { getIcon } from '../../util/helper';
 import { ContainerLogo } from '../Login/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TokensContext } from '../../contexts/Authentication';
+import { fetchData } from '../../Settings';
+
 
 interface Props {
   navigation: any
 }
 
 const Home:FC<Props> = ({navigation}) => {
+  const { currentUser, token, setCurrentUser} = useContext(TokensContext);
+  const [isOnline, setIsOnline] = useState(currentUser?.isOnline)
+
+  useEffect(()=>{
+    fetchData({
+      path: '/deliverymen/fetch_data.json',
+      token,
+      callback: (json)=>{
+        setCurrentUser(json?.data?.attributes)
+        setIsOnline(json?.data?.attributes?.isOnline)
+      }
+    })
+  }, [])
+  const toggleUserOnline = (online) =>{
+    setIsOnline(online)
+    fetchData({
+      method: "POST",
+      path: '/deliverymen/toggle_online.json',
+      params: {
+        is_online: online
+      },
+      token,
+      callback: (json)=>{
+        setIsOnline(json.is_online)
+      }
+    })
+    
+    //navigation.navigate('DeliveryStatus')
+  }
+  let activeColor = () =>{
+    return isOnline ? "green" : "red"
+  }
   return (
     <Container>
-      <CustomHeader title='Olá, Fabiano' showBtnDelivery={true}/>
+      <CustomHeader title={`Olá, ${currentUser?.name}`} showBtnDelivery={true}/>
       <ContainerHome>
         <Label>Status</Label>
         <ContainerSection>
           <StatusImage source={require('../../images/status-icon.png')} />
           <ContainerDescription>
-            <SectionTitle>Offline</SectionTitle>
-            <SectionDescription>Não quero realizar entregas</SectionDescription>
+            {isOnline ? <Fragment>
+              <SectionTitle>Online</SectionTitle>
+              <SectionDescription>quero realizar entregas</SectionDescription>
+            </Fragment> : 
+            <Fragment>
+              <SectionTitle>Offline</SectionTitle>
+              <SectionDescription>Não quero realizar entregas</SectionDescription>
+            </Fragment>
+            }
           </ContainerDescription>
           <ContainerAction>
-            <TouchableOpacity onPress={() => navigation.navigate('DeliveryStatus')}>
-              { getIcon('MaterialCommunityIcons', 'power', 36, 'red') }              
+            <TouchableOpacity style={{alignItems: "center"}} onPress={() => toggleUserOnline(!isOnline)}>
+              { getIcon('MaterialCommunityIcons', 'power', 36, activeColor()) }              
+              <StatusText style={{color: activeColor(), textAlign: 'center'}}>ficar {isOnline ? 'offline' : 'online'}</StatusText>
             </TouchableOpacity>
-            <StatusText style={{color: 'red'}}>ficar online</StatusText>
           </ContainerAction>
         </ContainerSection>
         <Label>Carteira</Label>
