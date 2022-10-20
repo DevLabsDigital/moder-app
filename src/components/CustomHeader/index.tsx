@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { getIcon } from '../../util/helper'
 
 type HeaderProps = {
-  title: string;
+  title?: string;
   showBtnDelivery: boolean;
 }
 

@@ -1,4 +1,4 @@
-import { Image, Text, View } from 'react-native';
+import { Alert, Image, Text, View } from 'react-native';
 import React, { FC, Fragment, useContext, useEffect, useState } from "react";
 import CustomHeader from '../../components/CustomHeader';
 import { 
@@ -22,6 +22,8 @@ import { ContainerLogo } from '../Login/styles';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TokensContext } from '../../contexts/Authentication';
 import { fetchData } from '../../Settings';
+import OneSignal from 'react-native-onesignal';
+import { OrderContext, Order } from '../../contexts/Order';
 
 
 interface Props {
@@ -31,6 +33,9 @@ interface Props {
 const Home:FC<Props> = ({navigation}) => {
   const { currentUser, token, setCurrentUser} = useContext(TokensContext);
   const [isOnline, setIsOnline] = useState(currentUser?.isOnline)
+  const {orders, setOrders, currentOrder, setCurrentOrder} = useContext(OrderContext);
+  const [todayOrders, setTodayOrders] = useState([]);
+  const [monthOrders, setMonthOrders] = useState([]);
 
   useEffect(()=>{
     fetchData({
@@ -39,9 +44,49 @@ const Home:FC<Props> = ({navigation}) => {
       callback: (json)=>{
         setCurrentUser(json?.data?.attributes)
         setIsOnline(json?.data?.attributes?.isOnline)
+        setupOneSignal(json)
+        getOrders()
       }
     })
   }, [])
+
+  const setupOneSignal = (userData) =>{
+      /* O N E S I G N A L   S E T U P */
+      interface NotificationData {
+        notification_type?: string 
+      }
+      try{
+        OneSignal.setLogLevel(6, 0);
+        OneSignal.setAppId("02a91ec1-1013-4c40-a5bd-f498f427174e")
+        OneSignal.setEmail(userData.email)
+        OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+          console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+          let notification = notificationReceivedEvent.getNotification();
+          //console.log("notification: ", notification);
+          //alert(JSON.stringify(notification.additionalData))
+          //setCurrentOrder(notification.additionalData?.["order"]?.["data"]?.["attributes"])
+          
+          const data = notification.additionalData as NotificationData;
+          //console.log("additionalData: ", data);
+          //alert(JSON.stringify(data.notification_type))
+          //const button2 = { text: "Complete", onPress: () => { notificationReceivedEvent.complete(notification); }};
+          if(data.notification_type == "new_order"){
+            
+            setCurrentOrder(notification.additionalData?.["order"]?.["data"]?.["attributes"])
+            setTimeout(()=>{
+              showOrderScreen()
+            }, 200)
+            
+          }
+         });
+      }catch(e){
+
+      }
+  }
+
+  const showOrderScreen = () =>{
+    navigation.navigate('Racer')
+  }
   const toggleUserOnline = (online) =>{
     setIsOnline(online)
     fetchData({
@@ -53,6 +98,24 @@ const Home:FC<Props> = ({navigation}) => {
       token,
       callback: (json)=>{
         setIsOnline(json.is_online)
+      }
+    })
+    
+    //navigation.navigate('DeliveryStatus')
+  }
+
+  const getOrders = () =>{
+    fetchData({
+      method: "GET",
+      path: '/orders.json',
+      token,
+      callback: (json)=>{
+        let ordersData = json.data.map((order)=> order.attributes)
+        let monthData = json.data.filter((order)=> order.attributes.createdThisMonth)
+        let todayData = json.data.filter((order)=> order.attributes.createdToday)
+        setOrders(ordersData)
+        setTodayOrders(todayData)
+        setMonthOrders(monthData)
       }
     })
     
@@ -90,7 +153,7 @@ const Home:FC<Props> = ({navigation}) => {
         <ContainerSection>
           <WalletImage source={require('../../images/wallet-icon.png')} />
           <ContainerDescription>
-            <SectionTitle>R$ 562,00</SectionTitle>
+            <SectionTitle>R$ 00,00</SectionTitle>
             <SectionDescription>Total a receber</SectionDescription>
           </ContainerDescription>
           <ContainerAction> 
@@ -104,8 +167,8 @@ const Home:FC<Props> = ({navigation}) => {
         <ContainerSection>
           <ReportImage source={require('../../images/bike-icon.png')}/>
           <ContainerDescription>
-            <SectionTitle>71 entregas este mês</SectionTitle>
-            <SectionDescription>15 entregas hoje</SectionDescription>
+            <SectionTitle>{monthOrders?.length} entregas este mês</SectionTitle>
+            <SectionDescription>{todayOrders?.length} entregas hoje</SectionDescription>
           </ContainerDescription>
         </ContainerSection>
         <ExtractBtn onPress={() => navigation.navigate('Extract')}>

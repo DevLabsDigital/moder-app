@@ -34,12 +34,12 @@ const Login:FC<Props> = ({navigation}) => {
     AsyncStorage.getItem("authToken").then((token)=>{
       if(token){
         setToken(token)
-        goToHome()
+        //goToHome()
       }
-    }, [])
+    })
     
     
-  });
+  }, []);
   
   const goToHome = () => {
     navigation.navigate('Home')

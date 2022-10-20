@@ -12,7 +12,8 @@ import FirstStep from './src/pages/Register/firstStep'
 import SecondStep from './src/pages/Register/secondStep'
 import { TokensContext, User } from './src/contexts/Authentication';
 import { RegisterDatasContext, RegisterData } from './src/contexts/Register';
-import OneSignal from 'react-native-onesignal';
+import { Order, OrderContext } from './src/contexts/Order';
+
 
 
 const Stack = createStackNavigator();
@@ -22,20 +23,9 @@ export default function App() {
   const [token, setToken] = useState("");
   const [currentUser, setCurrentUser] = useState<User>();
   const [registerData, setRegisterData] = useState<RegisterData>();
-
-  useEffect(()=>{
-      /* O N E S I G N A L   S E T U P */
-    OneSignal.setAppId("02a91ec1-1013-4c40-a5bd-f498f427174e")
+  const [currentOrder, setCurrentOrder] = useState<Order>();
+  const [orders, setOrders] = useState<Order[]>();
   
-    
-    
-  
-    return function cleanup() {
-      // OneSignal.removeEventListener("received", this.onReceived);
-      // OneSignal.removeEventListener("opened", this.onReceived);
-      // OneSignal.removeEventListener("ids", this.onIds);
-    }
-  }, [])
 
   const getToken = () => {
     setIsLoading(true);
@@ -45,6 +35,7 @@ export default function App() {
     setToken("")
   }
   return (
+   
     <RegisterDatasContext.Provider value={{
       registerData,
       setRegisterData
@@ -59,60 +50,65 @@ export default function App() {
         setCurrentUser
       }}>
         <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen 
-              name="Login" 
-              component={Login} 
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen 
-              name="FirstStep" 
-              component={FirstStep}
-              options={{ 
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen 
-              name="SecondStep" 
-              component={SecondStep}
-              options={{ 
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen 
-              name="Home" 
-              component={Home}
-              options={{ 
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen 
-              name="DeliveryStatus" 
-              component={DeliveryStatus}
-              options={{ 
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen 
-              name="Extract" 
-              component={Extract}
-              options={{ 
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen 
-              name="Racer" 
-              component={Racer}
-              options={{ 
-                headerShown: false,
-              }}
-            />
-          </Stack.Navigator>
+          <OrderContext.Provider value={{
+            currentOrder, setCurrentOrder, orders, setOrders
+          }}>
+            <Stack.Navigator>
+              <Stack.Screen 
+                name="Login" 
+                component={Login} 
+                options={{
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen 
+                name="FirstStep" 
+                component={FirstStep}
+                options={{ 
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen 
+                name="SecondStep" 
+                component={SecondStep}
+                options={{ 
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen 
+                name="Home" 
+                component={Home}
+                options={{ 
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen 
+                name="DeliveryStatus" 
+                component={DeliveryStatus}
+                options={{ 
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen 
+                name="Extract" 
+                component={Extract}
+                options={{ 
+                  headerShown: false,
+                }}
+              />
+              <Stack.Screen 
+                name="Racer" 
+                component={Racer}
+                options={{ 
+                  headerShown: false,
+                }}
+              />
+            </Stack.Navigator>
+          </OrderContext.Provider>
         </NavigationContainer>
       </TokensContext.Provider>
     </RegisterDatasContext.Provider>
+    
   );
 }
 

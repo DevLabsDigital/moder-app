@@ -1,0 +1,7 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="10" cy="10" r="10" fill="#0099D8"/>
+    <mask id="aq1901uaba" fill="#fff">
+        <path d="M4.5 9a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v5.5a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V9zM8.5 8a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V5.5a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1V8zM12.5 11a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1V5.5a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1V11z"/>
+    </mask>
+    <path d="M6.5 9.5H10v-2H6.5v2zm4-3.5H14V4h-3.5v2zm-5 4h1V6h-1v4zm0-1v5.5h4V9h-4zm1 4.5h-1v4h1v-4zm0 1V9h-4v5.5h4zm-1-1a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4zm0 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm1-4.5a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zm-1-4a3 3 0 0 0-3 3h4a1 1 0 0 1-1 1V6zm4 5h1V7h-1v4zm4-3V5.5h-4V8h4zm-3-5.5h-1v4h1v-4zm-4 3V8h4V5.5h-4zm3-3a3 3 0 0 0-3 3h4a1 1 0 0 1-1 1v-4zm4 3a3 3 0 0 0-3-3v4a1 1 0 0 1-1-1h4zm-3 5.5a3 3 0 0 0 3-3h-4a1 1 0 0 1 1-1v4zm-1-4a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3V7zm4 7h1v-4h-1v4zm4-3V5.5h-4V11h4zm-3-8.5h-1v4h1v-4zm-4 3V11h4V5.5h-4zm3-3a3 3 0 0 0-3 3h4a1 1 0 0 1-1 1v-4zm4 3a3 3 0 0 0-3-3v4a1 1 0 0 1-1-1h4zm-3 8.5a3 3 0 0 0 3-3h-4a1 1 0 0 1 1-1v4zm-1-4a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4z" fill="#fff" mask="url(#aq1901uaba)"/>
+</svg>

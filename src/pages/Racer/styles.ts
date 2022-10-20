@@ -23,7 +23,6 @@ export const LogoImage = styled.Image`
   height: 24px;  
   resize-mode: contain;
   margin-right: 50px;
-  color: #000;
 `;
 export const Title = styled.Text`
   text-align: left;

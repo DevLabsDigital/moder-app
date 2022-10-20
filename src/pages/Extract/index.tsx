@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
+import { OrderContext } from '../../contexts/Order';
 import { getIcon } from '../../util/helper';
 
 import { Container, ExtractHeader, FirstRow, Label, SecondRow, ThirdRow, WalletImage, ContainerDescription, SectionTitle, SectionDescription, PayDetailsText, ExtractListContainer, ExtractRow, IdText, DateText } from './styles';
+interface Props {
+  navigation: any
+}
+const Extract:React.FC<Props> = ({navigation}) => {
+  const {orders, setOrders, currentOrder, setCurrentOrder} = useContext(OrderContext);
 
-const Extract: React.FC = () => {
+  const openOrder= (order) => {
+    setCurrentOrder(order)
+    navigation.navigate('DeliveryStatus')
+  }
   return (
     <Container>
       <CustomHeader title='Extrato' showBtnDelivery={true} />
@@ -16,48 +25,28 @@ const Extract: React.FC = () => {
         <SecondRow>
         <WalletImage source={require('../../images/wallet-icon.png')} />
           <ContainerDescription>
-            <SectionTitle>R$ 562,00</SectionTitle>
+            <SectionTitle>R$ --,--</SectionTitle>
             <SectionDescription>Total a receber</SectionDescription>
-            <PayDetailsText>Próximo pagamento 22/03. Terça-Feira</PayDetailsText>
+            <PayDetailsText>Próximo pagamento --/--. Terça-Feira</PayDetailsText>
           </ContainerDescription>
 
         </SecondRow>
         <ThirdRow>
           <Label>Entregas</Label>
-          <SectionDescription>71 entregas este mês</SectionDescription>
+          <SectionDescription>{orders?.filter((order)=> order.createdThisMonth)?.length} entregas este mês</SectionDescription>
         </ThirdRow>
       </ExtractHeader>
       <ExtractListContainer>
-        <ExtractRow {...{isGray: false}}>
-          <IdText>#156168</IdText>
-          <Label>R$ 3,15</Label>
-          <DateText>22/03</DateText>
-          { getIcon('Entypo', 'chevron-small-right', 24, 'black') }
-        </ExtractRow>
-        <ExtractRow {...{isGray: true}}>
-          <IdText>#156128</IdText>
-          <Label>R$ 13,15</Label>
-          <DateText>25/03</DateText>
-          { getIcon('Entypo', 'chevron-small-right', 24, 'black') }
-        </ExtractRow>
-        <ExtractRow {...{isGray: false}}>
-          <IdText>#156178</IdText>
-          <Label>R$ 34,15</Label>
-          <DateText>25/03</DateText>
-          { getIcon('Entypo', 'chevron-small-right', 24, 'black') }
-        </ExtractRow>
-        <ExtractRow {...{isGray: true}}>
-          <IdText>#156128</IdText>
-          <Label>R$ 13,15</Label>
-          <DateText>25/03</DateText>
-          { getIcon('Entypo', 'chevron-small-right', 24, 'black') }
-        </ExtractRow>
-        <ExtractRow {...{isGray: false}}>
-          <IdText>#156178</IdText>
-          <Label>R$ 34,15</Label>
-          <DateText>25/03</DateText>
-          { getIcon('Entypo', 'chevron-small-right', 24, 'black') }
-        </ExtractRow>
+        {orders?.map((order)=>{
+          return <ExtractRow onPress={()=> openOrder(order)} {...{isGray: false}}>
+            <IdText>#{order.id}</IdText>
+            {/* <Label>R$  </Label> */}
+            <DateText>{order.createdAt}</DateText>
+            { getIcon('Entypo', 'chevron-small-right', 24, 'black') }
+          </ExtractRow>
+        })}
+        
+        
       </ExtractListContainer>
     </Container>
   );

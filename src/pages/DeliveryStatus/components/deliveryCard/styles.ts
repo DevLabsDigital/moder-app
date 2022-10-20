@@ -41,4 +41,12 @@ export const AddressContainer = styled.View`
 export const Description = styled.Text`
   font-size: 14px;
   color: #6d7278;
+  text-align: right;
+`;
+
+export const NoteDescription = styled.Text`
+  font-size: 14px;
+  color: #6d7278;
+  text-align: right;
+  font-style: italic;
 `;

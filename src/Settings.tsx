@@ -1,6 +1,7 @@
 
 
-const URL = "http://192.168.0.177:3000/api/v1"
+// const URL = "http://192.168.0.4:3000/api/v1"
+const URL = "https://moder-deliver.herokuapp.com/api/v1"
 export const fetchData = ({path, method="GET", token="", params={}, callback=(json)=>{}}) =>{
         let body = {}
         

@@ -1,9 +1,9 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useContext } from 'react';
+import { Alert, View } from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import WithdrawalCard from './components/withdrawalCard';
 import DeliveryCard from './components/deliveryCard';
-
+import {Linking} from 'react-native'
 import { 
   Container, 
   DeliveryStatusContainer, 
@@ -17,8 +17,20 @@ import {
   ValueText,
   DetailContainer,
   DeliveryContainer,
-  WithdrawalContainer
+  WithdrawalContainer,
+  DeliveryButton,
+  DeliveryButtonText,
+  GetBad,
+  GetBadText,
+  Center,
+  CompletedTag,
+  CompletedTagImage,
+  CompletedText,
+  CompletedTextSmall
 } from './styles';
+import { OrderContext } from '../../contexts/Order';
+import { fetchData } from '../../Settings';
+import { TokensContext } from '../../contexts/Authentication';
 
 const withdrawal1 = {
   index: 1,
@@ -53,16 +65,71 @@ const delivery2 = {
   finished: false
 }
 
-const DeliveryStatus: React.FC = () => {
+interface Props {
+  navigation: any
+}
+
+const DeliveryStatus:React.FC<Props> = ({navigation}) => {
+  const {currentOrder, setCurrentOrder} = useContext(OrderContext)
+  const { token} = useContext(TokensContext);
+  
+  const updateOrderState = ()=>{
+    if (currentOrder?.state == "completed"){
+      navigation.navigate('Home');
+    }
+    else{
+      Alert.alert("Status","Deseja atualizar o status?",[
+        {
+          "text": "Não"
+        },
+        {
+          "text": "Sim",
+          onPress:()=>{
+            fetchData({
+              path: `/orders/${currentOrder?.id}/status`,
+              method: "PUT",
+              token,
+              callback: (json)=>{
+                try {
+                  console.log(JSON.stringify(json.data.attributes))
+                  // alert(json.data.attributes.destinationAccountable)
+                  setCurrentOrder(json.data.attributes)
+                  // Alert.alert("Confirmação","Status atualizado")
+                } catch (error) {
+                  Alert.alert("Erro","Erro ao atualizar status")
+                }
+                
+              }
+              
+            })
+          }
+        }
+      ])
+    }
+    
+  }
+
+  const completedTag =()=>{
+    if(currentOrder?.state == "completed"){
+      return <>
+        <View style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+          <CompletedTag >
+            <CompletedTagImage source={require('../../images/check-ico.png')} />
+          </CompletedTag>
+        </View>
+      </>
+    }
+  }
+
   return (
     <Container>
-      <CustomHeader title='Em andamento' showBtnDelivery={false}/>
+      <CustomHeader title={currentOrder?.stateLabel == "CONCLUIDO" ? "CONCLUIDO" : "EM ANDAMENTO"} showBtnDelivery={false}/>
       <DeliveryStatusContainer>
         <StatusContainer>
           <FirstStatusSection>
-            <StatusText>Em andamento</StatusText>
-            <DeliveryTagText>Entrega #560987</DeliveryTagText>
-            <DateText>Segunda, 09 de Maio</DateText>
+            <StatusText>{currentOrder?.stateLabel}</StatusText>
+            <DeliveryTagText>Entrega #{currentOrder?.id}</DeliveryTagText>
+            <DateText>{currentOrder?.createdAt}</DateText>
           </FirstStatusSection>
           <SecondStatusSection>
             <LabelText>Valor Corrida</LabelText>
@@ -71,17 +138,52 @@ const DeliveryStatus: React.FC = () => {
         </StatusContainer>
         <DetailContainer>
           <WithdrawalContainer>
-            <WithdrawalCard {...withdrawal1}/>
-            <WithdrawalCard {...withdrawal2}/>
+            <WithdrawalCard
+              index={currentOrder?.id}
+              name={currentOrder?.company?.name}
+              neighboor={currentOrder?.company?.neighborhood}
+              street={currentOrder?.company?.address}
+              number={""}
+              finished={!!currentOrder?.isPicked}
+            />
           </WithdrawalContainer>
-
+          {completedTag()}
           <DeliveryContainer>
-            <DeliveryCard {...delivery1}/>
-            <DeliveryCard {...delivery2}/>
+            <DeliveryCard 
+              index={currentOrder?.id}
+              name={currentOrder?.destinationAccountable}
+              neighboor={currentOrder?.destinationAddress}
+              street={currentOrder?.destinationAddress}
+              city={currentOrder?.destinationCity}
+              uf={currentOrder?.destinationState}
+              neighborhood={currentOrder?.destinationNeighborhood}
+              note={currentOrder?.note}
+              number={""}
+              finished={!!currentOrder?.isDelivered}
+            />
           </DeliveryContainer>
         </DetailContainer>
       </DeliveryStatusContainer>
-
+      {["back_to_company", "completed"].includes(currentOrder?.state || "error")&& <>
+        <View>
+          <CompletedText>Entrega Concluida</CompletedText>
+          {currentOrder?.state == "back_to_company" && <>
+            <CompletedTextSmall>Retorne ao estabelecimento pra concluir sua rota</CompletedTextSmall>
+          </>}
+        </View>
+      </>}
+      {currentOrder?.state != "completed" && <>
+      <Center>
+        <GetBad onPress={()=> Linking.openURL(`tel:${55555555}`)}>
+          <GetBadText>Deu ruim :(</GetBadText>
+        </GetBad>
+      </Center>
+      </>}
+      <DeliveryButton onPress={()=> updateOrderState()}>
+        <DeliveryButtonText>
+          {currentOrder?.actionText}
+        </DeliveryButtonText>
+      </DeliveryButton>
     </Container>
   );
 }

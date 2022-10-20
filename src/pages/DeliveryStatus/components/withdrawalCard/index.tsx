@@ -2,12 +2,12 @@ import React from 'react';
 import { CircleStatus, Container, Description, DescriptionContainer, DescriptionTitle, TitleContainer, Label, AddressContainer } from './styles';
 
 type Withdrawal = {
-  index: number;
-  name: string;
-  neighboor: string;
-  street: string;
-  number: string;
-  finished: boolean;
+  index?: number;
+  name?: string;
+  neighboor?: string;
+  street?: string;
+  number?: string;
+  finished?: boolean;
 }
 
 const WithdrawalCard: React.FC<Withdrawal> = (withdrawal) => {

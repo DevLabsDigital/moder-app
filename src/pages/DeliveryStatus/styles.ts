@@ -5,6 +5,7 @@ export const Container = styled.View`
 `;
 export const DeliveryStatusContainer = styled.View`
   padding: 10px;
+  flex: 1;
 `;
 export const StatusContainer = styled.View`
   flex-direction: row;
@@ -59,3 +60,68 @@ export const WithdrawalContainer = styled.View`
   border-bottom-width: 1px;
   border-bottom-color: #cacaca;
 `;
+
+export const DeliveryButton = styled.TouchableOpacity`
+  height: 47px;
+  padding: 8px 101px 15px 98px;
+  background-color: #009ed8;
+`
+
+export const DeliveryButtonText = styled.Text`
+  color: white;
+  font-size: 16px;
+  letter-spacing: 0.19px;
+  text-align: center;
+`
+
+export const GetBad = styled.TouchableOpacity`
+  width: 139px;
+  height: 37px;
+  padding: 11px 38px 12px 40px;
+  border-radius: 6px;
+  border: solid 1px #fa6400;
+  margin-bottom:20px
+`
+
+export const GetBadText = styled.Text`
+  font-size: 12px;
+  letter-spacing: 0.14px;
+  text-align: center;
+  color: #fa6400;
+`
+
+export const CompletedTextSmall = styled.Text`
+  font-size: 14px;
+  text-align: center;
+  color: #6d7278;
+  margin-bottom: 20px;
+`
+
+export const CompletedText = styled.Text`
+  font-size: 18px;
+  font-weight: 500;
+  color: #00a2d9;
+  text-align: center;
+  margin-bottom: 20px;
+`
+
+export const Center = styled.View`
+  justify-content: center;
+  align-items: center;
+`
+
+export const CompletedTag = styled.View`
+  width: 73px;
+  height: 73px;
+  margin: 26px 1px 83px 2px;
+  padding: 24px 24px 25px 25px;
+  background-color: #32c5ff;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+`
+
+export const CompletedTagImage = styled.Image`
+  width: 30px;
+  height: 30px;
+`
